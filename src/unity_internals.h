@@ -298,6 +298,17 @@ extern void UNITY_OMIT_OUTPUT_FLUSH_HEADER_DECLARATION;
 #endif
 
 /*-------------------------------------------------------
+ * String storage
+ *-------------------------------------------------------*/
+
+#ifndef DECLARE_UNITY_STRING
+#define DECLARE_UNITY_STRING(name) extern const char name[]
+#endif
+#ifndef UNITY_STRING
+#define UNITY_STRING(name) (name)
+#endif
+
+/*-------------------------------------------------------
  * Language Features Available
  *-------------------------------------------------------*/
 #if !defined(UNITY_WEAK_ATTRIBUTE) && !defined(UNITY_WEAK_PRAGMA)
@@ -562,9 +573,9 @@ UNITY_INTERNAL_PTR UnityDoubleToPtr(const double num);
  * Error Strings We Might Need
  *-------------------------------------------------------*/
 
-extern const char UnityStrErrFloat[];
-extern const char UnityStrErrDouble[];
-extern const char UnityStrErr64[];
+DECLARE_UNITY_STRING(UnityStrErrFloat);
+DECLARE_UNITY_STRING(UnityStrErrDouble);
+DECLARE_UNITY_STRING(UnityStrErr64);
 
 /*-------------------------------------------------------
  * Test Running Macros
@@ -713,30 +724,30 @@ int UnityTestMatches(void);
 #define UNITY_TEST_ASSERT_UINT64_WITHIN(delta, expected, actual, line, message)                  UnityAssertNumbersWithin((delta), (UNITY_INT)(expected), (UNITY_INT)(actual), (message), (UNITY_LINE_TYPE)(line), UNITY_DISPLAY_STYLE_UINT64)
 #define UNITY_TEST_ASSERT_HEX64_WITHIN(delta, expected, actual, line, message)                   UnityAssertNumbersWithin((delta), (UNITY_INT)(expected), (UNITY_INT)(actual), (message), (UNITY_LINE_TYPE)(line), UNITY_DISPLAY_STYLE_HEX64)
 #else
-#define UNITY_TEST_ASSERT_EQUAL_INT64(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_EQUAL_UINT64(expected, actual, line, message)                          UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_EQUAL_HEX64(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_EQUAL_INT64_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_EQUAL_UINT64_ARRAY(expected, actual, num_elements, line, message)      UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_EQUAL_HEX64_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_INT64_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_UINT64_WITHIN(delta, expected, actual, line, message)                  UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
-#define UNITY_TEST_ASSERT_HEX64_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErr64)
+#define UNITY_TEST_ASSERT_EQUAL_INT64(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_EQUAL_UINT64(expected, actual, line, message)                          UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_EQUAL_HEX64(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_EQUAL_INT64_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_EQUAL_UINT64_ARRAY(expected, actual, num_elements, line, message)      UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_EQUAL_HEX64_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_INT64_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_UINT64_WITHIN(delta, expected, actual, line, message)                  UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
+#define UNITY_TEST_ASSERT_HEX64_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErr64))
 #endif
 
 #ifdef UNITY_EXCLUDE_FLOAT
-#define UNITY_TEST_ASSERT_FLOAT_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_EQUAL_FLOAT(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_EQUAL_FLOAT_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_EACH_EQUAL_FLOAT(expected, actual, num_elements, line, message)        UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_INF(actual, line, message)                                    UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NEG_INF(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NAN(actual, line, message)                                    UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_DETERMINATE(actual, line, message)                            UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_INF(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_NEG_INF(actual, line, message)                            UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_NAN(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
-#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE(actual, line, message)                        UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrFloat)
+#define UNITY_TEST_ASSERT_FLOAT_WITHIN(delta, expected, actual, line, message)                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_EQUAL_FLOAT(expected, actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_EQUAL_FLOAT_ARRAY(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_EACH_EQUAL_FLOAT(expected, actual, num_elements, line, message)        UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_INF(actual, line, message)                                    UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NEG_INF(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NAN(actual, line, message)                                    UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_DETERMINATE(actual, line, message)                            UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_INF(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_NEG_INF(actual, line, message)                            UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_NAN(actual, line, message)                                UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
+#define UNITY_TEST_ASSERT_FLOAT_IS_NOT_DETERMINATE(actual, line, message)                        UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrFloat))
 #else
 #define UNITY_TEST_ASSERT_FLOAT_WITHIN(delta, expected, actual, line, message)                   UnityAssertFloatsWithin((UNITY_FLOAT)(delta), (UNITY_FLOAT)(expected), (UNITY_FLOAT)(actual), (message), (UNITY_LINE_TYPE)(line))
 #define UNITY_TEST_ASSERT_EQUAL_FLOAT(expected, actual, line, message)                           UNITY_TEST_ASSERT_FLOAT_WITHIN((UNITY_FLOAT)(expected) * (UNITY_FLOAT)UNITY_FLOAT_PRECISION, (UNITY_FLOAT)(expected), (UNITY_FLOAT)(actual), (UNITY_LINE_TYPE)(line), (message))
@@ -753,18 +764,18 @@ int UnityTestMatches(void);
 #endif
 
 #ifdef UNITY_EXCLUDE_DOUBLE
-#define UNITY_TEST_ASSERT_DOUBLE_WITHIN(delta, expected, actual, line, message)                  UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_EQUAL_DOUBLE(expected, actual, line, message)                          UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_EQUAL_DOUBLE_ARRAY(expected, actual, num_elements, line, message)      UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_EACH_EQUAL_DOUBLE(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_INF(actual, line, message)                                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NEG_INF(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NAN(actual, line, message)                                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_DETERMINATE(actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_INF(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF(actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_NAN(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
-#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(actual, line, message)                       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UnityStrErrDouble)
+#define UNITY_TEST_ASSERT_DOUBLE_WITHIN(delta, expected, actual, line, message)                  UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_EQUAL_DOUBLE(expected, actual, line, message)                          UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_EQUAL_DOUBLE_ARRAY(expected, actual, num_elements, line, message)      UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_EACH_EQUAL_DOUBLE(expected, actual, num_elements, line, message)       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_INF(actual, line, message)                                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NEG_INF(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NAN(actual, line, message)                                   UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_DETERMINATE(actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_INF(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_NEG_INF(actual, line, message)                           UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_NAN(actual, line, message)                               UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
+#define UNITY_TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(actual, line, message)                       UNITY_TEST_FAIL((UNITY_LINE_TYPE)(line), UNITY_STRING(UnityStrErrDouble))
 #else
 #define UNITY_TEST_ASSERT_DOUBLE_WITHIN(delta, expected, actual, line, message)                  UnityAssertDoublesWithin((UNITY_DOUBLE)(delta), (UNITY_DOUBLE)(expected), (UNITY_DOUBLE)(actual), (message), (UNITY_LINE_TYPE)line)
 #define UNITY_TEST_ASSERT_EQUAL_DOUBLE(expected, actual, line, message)                          UNITY_TEST_ASSERT_DOUBLE_WITHIN((UNITY_DOUBLE)(expected) * (UNITY_DOUBLE)UNITY_DOUBLE_PRECISION, (UNITY_DOUBLE)expected, (UNITY_DOUBLE)actual, (UNITY_LINE_TYPE)(line), message)
