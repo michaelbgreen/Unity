@@ -301,8 +301,14 @@ extern void UNITY_OMIT_OUTPUT_FLUSH_HEADER_DECLARATION;
  * String storage
  *-------------------------------------------------------*/
 
+#ifndef DEFINE_STATIC_UNITY_STRING
+#define DEFINE_STATIC_UNITY_STRING(name, str) static const char name[] = str
+#endif
 #ifndef DECLARE_UNITY_STRING
 #define DECLARE_UNITY_STRING(name) extern const char name[]
+#endif
+#ifndef DEFINE_UNITY_STRING
+#define DEFINE_UNITY_STRING(name, str) const char name[] = str
 #endif
 #ifndef UNITY_STRING
 #define UNITY_STRING(name) (name)
@@ -605,9 +611,13 @@ DECLARE_UNITY_STRING(UnityStrErr64);
 /* If we can't do the tricky version, we'll just have to require them to always include the line number */
 #ifndef RUN_TEST
 #ifdef CMOCK
-#define RUN_TEST(func, num) UnityDefaultTestRun(func, #func, num)
+#define RUN_TEST(func, num) \
+    DEFINE_STATIC_UNITY_STRING(UnityTestNameStr_##func, #func); \
+    UnityDefaultTestRun(func, UNITY_STRING(UnityTestNameStr_##func), num)
 #else
-#define RUN_TEST(func) UnityDefaultTestRun(func, #func, __LINE__)
+#define RUN_TEST(func) \
+    DEFINE_STATIC_UNITY_STRING(UnityTestNameStr_##func, #func); \
+    UnityDefaultTestRun(func, UNITY_STRING(UnityTestNameStr_##func), __LINE__)
 #endif
 #endif
 

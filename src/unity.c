@@ -19,13 +19,6 @@ void UNITY_OUTPUT_CHAR(int);
 
 struct UNITY_STORAGE_T Unity;
 
-#ifndef DEFINE_STATIC_UNITY_STRING
-#define DEFINE_STATIC_UNITY_STRING(name, str) static const char name[] = str
-#endif
-#ifndef DEFINE_UNITY_STRING
-#define DEFINE_UNITY_STRING(name, str) const char name[] = str
-#endif
-
 DEFINE_STATIC_UNITY_STRING(UnityStrOk,                      "OK");
 DEFINE_STATIC_UNITY_STRING(UnityStrPass,                    "PASS");
 DEFINE_STATIC_UNITY_STRING(UnityStrFail,                    "FAIL");
